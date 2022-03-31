@@ -1,5 +1,7 @@
 package material
 
+import "sort"
+
 type ColorPallette map[string]int
 
 var Red = ColorPallette{
@@ -118,4 +120,45 @@ var BlueGrey = ColorPallette{
 	"50": 0xeceff1, "100": 0xcfd8dc, "200": 0xb0bec5, "300": 0x90a4ae,
 	"400": 0x78909c, "500": 0x607d8b, "600": 0x546e7a, "700": 0x455a64,
 	"800": 0x37474f, "900": 0x263238,
+}
+var Spectrum = map[string]ColorPallette{
+	"Red":    Red,
+	"Pink":   Pink,
+	"Purple": Purple,
+	// These colors render too similarly to Purple for most use cases
+	// "DeepPurple": DeepPurple,
+	"Blue":       Blue,
+	"LightBlue":  LightBlue,
+	"Cyan":       Cyan,
+	"Teal":       Teal,
+	"Green":      Green,
+	"LightGreen": LightGreen,
+	"Lime":       Lime,
+	"Yellow":     Yellow,
+	"Amber":      Amber,
+	"Orange":     Orange,
+	"DeepOrange": DeepOrange,
+	"Brown":      Brown,
+	"Grey":       Grey,
+	"BlueGrey":   BlueGrey,
+}
+
+func GetColorsForShade(shade string) (colors []int) {
+	for _, cp := range Spectrum {
+		if hue, ok := cp[shade]; ok {
+			colors = append(colors, hue)
+			sort.Ints(colors)
+		}
+	}
+	return
+}
+
+func GetShadesForColorName(color string) (colors []int) {
+	if c, ok := Spectrum[color]; ok {
+		for _, cp := range c {
+			colors = append(colors, cp)
+			sort.Ints(colors)
+		}
+	}
+	return
 }

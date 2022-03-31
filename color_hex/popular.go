@@ -1,4 +1,4 @@
-package main
+package color_hex
 
 var Palettes = map[string][]int{"Facebook": {0x3B5998,
 	0x8B9DC3,
