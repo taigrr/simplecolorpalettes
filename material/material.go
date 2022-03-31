@@ -141,13 +141,24 @@ var spectrum = map[string]simplecolor.NamedPalette{
 	"blueGrey":   blueGrey,
 }
 
+func GetPalette() (colors simplecolor.SimplePalette) {
+	for _, cp := range spectrum {
+		for _, c := range cp {
+			colors = append(colors, c)
+		}
+	}
+	sort.Sort(colors)
+	return
+
+}
+
 func GetColorsForShade(shade string) (colors simplecolor.SimplePalette) {
 	for _, cp := range spectrum {
 		if hue, ok := cp[shade]; ok {
 			colors = append(colors, hue)
-			sort.Sort(colors)
 		}
 	}
+	sort.Sort(colors)
 	return
 }
 
@@ -155,8 +166,8 @@ func GetShadesForColorName(color string) (colors simplecolor.SimplePalette) {
 	if c, ok := spectrum[color]; ok {
 		for _, cp := range c {
 			colors = append(colors, cp)
-			sort.Sort(colors)
 		}
 	}
+	sort.Sort(colors)
 	return
 }

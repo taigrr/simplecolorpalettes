@@ -2,10 +2,12 @@ package luna
 
 import (
 	"sort"
+	"sync"
 
 	"github.com/taigrr/go-colorpalettes/simplecolor"
 )
 
+var once sync.Once
 var colors = simplecolor.SimplePalette{0x002b2b,
 	0x003f3f,
 	0x005e5e,
@@ -23,9 +25,8 @@ var colors = simplecolor.SimplePalette{0x002b2b,
 }
 
 func GetPalette() (sp simplecolor.SimplePalette) {
-	for _, x := range colors {
-		sp = append(sp, x)
-	}
-	sort.Sort(sp)
-	return
+	once.Do(func() {
+		sort.Sort(colors)
+	})
+	return colors
 }
