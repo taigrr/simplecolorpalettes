@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/taigrr/go-colorpalettes/luna"
 	"github.com/taigrr/go-colorpalettes/material"
 )
 
 func main() {
 	colors := material.GetShadesForColorName("Red")
+	colors = luna.GetPalette()
+	colors = colors.ToExtendedAnsi()
 	var open []string
 	var close []string
 	for _, c := range colors {
@@ -54,5 +57,4 @@ func main() {
 		fmt.Print(b.String() + " ")
 	}
 	fmt.Println("")
-
 }

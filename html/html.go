@@ -1,6 +1,12 @@
 package html
 
-var Colors = map[string]int{
+import (
+	"sort"
+
+	"github.com/taigrr/go-colorpalettes/simplecolor"
+)
+
+var colors = simplecolor.NamedPalette{
 	"aliceblue":            0xF0F8FF,
 	"antiquewhite":         0xFAEBD7,
 	"aqua":                 0x00FFFF,
@@ -141,4 +147,12 @@ var Colors = map[string]int{
 	"whitesmoke":           0xF5F5F5,
 	"yellow":               0xFFFF00,
 	"yellowgreen":          0x9ACD32,
+}
+
+func GetPalette() (sp simplecolor.SimplePalette) {
+	for _, x := range colors {
+		sp = append(sp, x)
+	}
+	sort.Sort(sp)
+	return
 }
