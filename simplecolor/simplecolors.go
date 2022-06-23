@@ -3,6 +3,8 @@ package simplecolor
 import (
 	"image/color"
 	"sort"
+	"strconv"
+	"strings"
 )
 
 type SimpleColor int
@@ -74,4 +76,25 @@ func (p SimplePalette) ToAnsi16() (sp SimplePalette) {
 	sort.Sort(sp)
 
 	return
+}
+
+func FromRGBA(r, g, b, a uint32) SimpleColor {
+	c := r
+	c = c<<8 + g
+	c = c<<8 + b
+	return SimpleColor(c)
+}
+
+func FromHexString(h string) SimpleColor {
+	h = strings.ReplaceAll(h, "#", "")
+	i, err := strconv.ParseInt(h, 16, 64)
+	if err != nil {
+		// if there's an error, we can't return it
+		// since this is a simple method.
+		// Instead, return a really weird color to draw attention.
+		// Black is the zero-value and it's actually used often, "plum" is
+		// (probably) not.
+		return FromHexString("#66042d")
+	}
+	return SimpleColor(i)
 }
