@@ -87,6 +87,16 @@ func FromRGBA(r, g, b, a uint32) SimpleColor {
 
 func FromHexString(h string) SimpleColor {
 	h = strings.ReplaceAll(h, "#", "")
+	hexRunes := []rune(h)
+	switch len(hexRunes) {
+	case 6:
+		break
+	case 3:
+		stretchedHex := hexRunes[0] + hexRunes[0] + hexRunes[1] + hexRunes[1] + hexRunes[2] + hexRunes[2]
+		h = string(stretchedHex)
+	default:
+		return FromHexString("#66042d")
+	}
 	i, err := strconv.ParseInt(h, 16, 64)
 	if err != nil {
 		// if there's an error, we can't return it
