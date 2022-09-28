@@ -7,10 +7,12 @@ import (
 	"strings"
 )
 
-type SimpleColor int
-type NamedPalette map[string]SimpleColor
-type SimplePalette []SimpleColor
-type conversionPalette []color.Color
+type (
+	SimpleColor       int
+	NamedPalette      map[string]SimpleColor
+	SimplePalette     []SimpleColor
+	conversionPalette []color.Color
+)
 
 func (s SimplePalette) ToPalette() color.Palette {
 	var x color.Palette
@@ -28,8 +30,8 @@ func (input SimpleColor) ToAnsi16() SimpleColor {
 	color := ansi[0:16].ToPalette().Convert(input)
 	r, g, b, _ := color.RGBA()
 	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
-
 }
+
 func (input SimpleColor) ToExtendedAnsi() SimpleColor {
 	color := ansi.ToPalette().Convert(input)
 	r, g, b, _ := color.RGBA()
@@ -78,7 +80,7 @@ func (p SimplePalette) ToAnsi16() (sp SimplePalette) {
 	return
 }
 
-func FromRGBA(r, g, b, a uint32) SimpleColor {
+func FromRGBA(r, g, b, _ uint32) SimpleColor {
 	c := r
 	c = c<<8 + g
 	c = c<<8 + b

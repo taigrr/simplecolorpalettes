@@ -1,7 +1,7 @@
-package color_hex
+package hexcolor
 
-var palettes = map[string][]int{"#3": {0x2A4D69,
-	0x4B86B4, 0xADCBE3, 0xE7EFF6, 0x63ACE5},
+var Palettes = map[string][]int{
+	"#3":                            {0x2A4D69, 0x4B86B4, 0xADCBE3, 0xE7EFF6, 0x63ACE5},
 	"- Lips -":                      {0xF98787, 0xE76A6A, 0xD65B5B, 0xC14B4B, 0xB83F3F},
 	"24K GOLD":                      {0xA67C00, 0xBF9B30, 0xFFBF00, 0xFFCF40, 0xFFDC73},
 	"80s":                           {0xFF48C4, 0x2BD1FC, 0xF3EA5F, 0xC04DF9, 0xFF3F3F},
