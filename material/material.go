@@ -6,6 +6,9 @@ import (
 	"github.com/taigrr/go-colorpalettes/simplecolor"
 )
 
+// The names and hex values for the material palettes are sourced from
+// material.io: https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+
 var (
 	red = simplecolor.NamedPalette{
 		"50": 0xffebee, "100": 0xffcdd2, "200": 0xef9a9a, "300": 0xe57373,
