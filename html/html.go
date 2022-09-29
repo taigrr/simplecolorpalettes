@@ -149,6 +149,10 @@ var colors = simplecolor.NamedPalette{
 	"yellowgreen":          0x9ACD32,
 }
 
+func GetNamedPalette() (np simplecolor.NamedPalette) {
+	return colors
+}
+
 func GetPalette() (sp simplecolor.SimplePalette) {
 	for _, x := range colors {
 		sp = append(sp, x)

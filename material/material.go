@@ -119,26 +119,52 @@ var (
 		"800": 0x37474f, "900": 0x263238,
 	}
 )
-var spectrum = map[string]simplecolor.NamedPalette{
-	"red":    red,
-	"pink":   pink,
-	"purple": purple,
+
+type ColorName int
+
+const (
+	Red ColorName = iota
+	Pink
+	Purple
+	DeepPurple
+	Blue
+	LightBlue
+	Cyan
+	Teal
+	Green
+	LightGreen
+	Lime
+	Yellow
+	Amber
+	Orange
+	DeepOrange
+	Brown
+	Grey
+	BlueGrey
+	Gray     = Grey
+	BlueGray = BlueGrey
+)
+
+var spectrum = map[ColorName]simplecolor.NamedPalette{
+	Red:    red,
+	Pink:   pink,
+	Purple: purple,
 	// These colors render too similarly to Purple for most use cases
 	// "DeepPurple": DeepPurple,
-	"blue":       blue,
-	"lightBlue":  lightBlue,
-	"cyan":       cyan,
-	"teal":       teal,
-	"green":      green,
-	"lightGreen": lightGreen,
-	"lime":       lime,
-	"yellow":     yellow,
-	"amber":      amber,
-	"orange":     orange,
-	"deepOrange": deepOrange,
-	"brown":      brown,
-	"grey":       grey,
-	"blueGrey":   blueGrey,
+	Blue:       blue,
+	LightBlue:  lightBlue,
+	Cyan:       cyan,
+	Teal:       teal,
+	Green:      green,
+	LightGreen: lightGreen,
+	Lime:       lime,
+	Yellow:     yellow,
+	Amber:      amber,
+	Orange:     orange,
+	DeepOrange: deepOrange,
+	Brown:      brown,
+	Grey:       grey,
+	BlueGrey:   blueGrey,
 }
 
 func GetPalette() (colors simplecolor.SimplePalette) {
@@ -149,7 +175,6 @@ func GetPalette() (colors simplecolor.SimplePalette) {
 	}
 	sort.Sort(colors)
 	return
-
 }
 
 func GetColorsForShade(shade string) (colors simplecolor.SimplePalette) {
@@ -162,7 +187,8 @@ func GetColorsForShade(shade string) (colors simplecolor.SimplePalette) {
 	return
 }
 
-func GetShadesForColorName(color string) (colors simplecolor.SimplePalette) {
+// Parameter must be one of the following:
+func GetShadesForColorName(color ColorName) (colors simplecolor.SimplePalette) {
 	if c, ok := spectrum[color]; ok {
 		for _, cp := range c {
 			colors = append(colors, cp)

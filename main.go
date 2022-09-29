@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/taigrr/go-colorpalettes/luna"
 	"github.com/taigrr/go-colorpalettes/material"
+	"github.com/taigrr/go-colorpalettes/vim/luna"
 )
 
 func main() {
-	colors := material.GetShadesForColorName("Red")
+	colors := material.GetShadesForColorName(material.Red)
 	colors = luna.GetPalette()
 	colors = colors.ToExtendedAnsi()
 	var open []string
@@ -22,7 +22,6 @@ func main() {
 		if (float32(red)*0.299 + float32(green)*0.587 + float32(blue)*0.114) > 150.0 {
 			open = append(open, fmt.Sprintf("\u001B[38;2;%d;%d;%dm", 0, 0, 0))
 		} else {
-
 			open = append(open, fmt.Sprintf("\u001B[38;2;%d;%d;%dm", 255, 255, 255))
 		}
 		close = append(close, "\u001B[39m")
@@ -31,8 +30,8 @@ func main() {
 		close = append(close, "\u001B[49m")
 
 		//		if m.isUnderlined {
-		//open = append(open, "\u001B[4m")
-		//close = append(close, "\u001B[24m")
+		// open = append(open, "\u001B[4m")
+		// close = append(close, "\u001B[24m")
 		//			}
 
 		//			if m.isDim {
