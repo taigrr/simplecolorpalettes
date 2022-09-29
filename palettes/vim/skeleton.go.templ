@@ -1,0 +1,20 @@
+package skeleton
+
+import (
+	"sort"
+	"sync"
+
+	"github.com/taigrr/go-colorpalettes/simplecolor"
+)
+
+var (
+	once   sync.Once
+	colors = simplecolor.SimplePalette{}
+)
+
+func GetPalette() (sp simplecolor.SimplePalette) {
+	once.Do(func() {
+		sort.Sort(colors)
+	})
+	return colors
+}
