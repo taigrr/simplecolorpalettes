@@ -1,4 +1,4 @@
-package luna
+package molokai
 
 import (
 	"sort"
@@ -10,20 +10,15 @@ import (
 var (
 	once   sync.Once
 	colors = simplecolor.SimplePalette{
-		0x002b2b,
-		0x003f3f,
-		0x005e5e,
-		0x2aa198,
-		0x2e8b57,
-		0x4e4e4e,
-		0x450000,
-		0x789f00,
-		0x780000,
-		0x973d45,
-		0xe20000,
-		0xff8036,
-		0xffff9a,
-		0xffffff,
+		0x080808,
+		0x1b1d1e,
+		0x232526,
+		0x465457,
+		0x66d9ef,
+		0xa6e22e,
+		0xe6db74,
+		0xf8f8f0,
+		0xf92672,
 	}
 )
 

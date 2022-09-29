@@ -1,4 +1,4 @@
-package luna
+package deus
 
 import (
 	"sort"
@@ -10,20 +10,14 @@ import (
 var (
 	once   sync.Once
 	colors = simplecolor.SimplePalette{
-		0x002b2b,
-		0x003f3f,
-		0x005e5e,
-		0x2aa198,
-		0x2e8b57,
-		0x4e4e4e,
-		0x450000,
-		0x789f00,
-		0x780000,
-		0x973d45,
-		0xe20000,
-		0xff8036,
-		0xffff9a,
-		0xffffff,
+		0x282c34,
+		0x3e4452,
+		0x61afef,
+		0x98c379,
+		0xabb2bf,
+		0xc678dd,
+		0xe06c75,
+		0xe5c07b,
 	}
 )
 

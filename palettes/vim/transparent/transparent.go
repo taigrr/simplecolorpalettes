@@ -1,4 +1,4 @@
-package luna
+package transparent
 
 import (
 	"sort"
@@ -10,20 +10,15 @@ import (
 var (
 	once   sync.Once
 	colors = simplecolor.SimplePalette{
-		0x002b2b,
-		0x003f3f,
-		0x005e5e,
-		0x2aa198,
-		0x2e8b57,
-		0x4e4e4e,
-		0x450000,
-		0x789f00,
-		0x780000,
-		0x973d45,
-		0xe20000,
-		0xff8036,
-		0xffff9a,
-		0xffffff,
+		0x1d1f21,
+		0x2f3d4d,
+		0x3f4b59,
+		0x8d96a1,
+		0xbbe67e,
+		0xd4bfff,
+		0xd70000,
+		0xf07178,
+		0xffae57,
 	}
 )
 

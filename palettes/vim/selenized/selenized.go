@@ -1,0 +1,65 @@
+package selenized
+
+import (
+	"sort"
+	"sync"
+
+	"github.com/taigrr/go-colorpalettes/simplecolor"
+)
+
+var (
+	once   sync.Once
+	colors = simplecolor.SimplePalette{
+		0x0059c6,
+		0x005dcc,
+		0x008777,
+		0x038d7c,
+		0x112e38,
+		0x163945,
+		0x254a57,
+		0x2d3c42,
+		0x3a7b00,
+		0x3a82f8,
+		0x3f8100,
+		0x42bdaa,
+		0x43545a,
+		0x4a91ff,
+		0x50cfba,
+		0x61777c,
+		0x69ad21,
+		0x6b47b6,
+		0x714cbc,
+		0x78be2e,
+		0x7e8783,
+		0x957000,
+		0x9b72e9,
+		0x9b7600,
+		0x9faeae,
+		0xa9430f,
+		0xab80fc,
+		0xb04713,
+		0xb12b82,
+		0xb73088,
+		0xb9001e,
+		0xbfd0d0,
+		0xc00221,
+		0xcbc2a6,
+		0xd1a416,
+		0xe26f35,
+		0xe4b424,
+		0xe75bb3,
+		0xe7ddc0,
+		0xf13c3e,
+		0xf67e41,
+		0xfaf0d2,
+		0xfb69c4,
+		0xff4b49,
+	}
+)
+
+func GetPalette() (sp simplecolor.SimplePalette) {
+	once.Do(func() {
+		sort.Sort(colors)
+	})
+	return colors
+}

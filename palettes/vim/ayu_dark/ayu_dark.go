@@ -1,4 +1,4 @@
-package luna
+package ayu_dark
 
 import (
 	"sort"
@@ -10,20 +10,14 @@ import (
 var (
 	once   sync.Once
 	colors = simplecolor.SimplePalette{
-		0x002b2b,
-		0x003f3f,
-		0x005e5e,
-		0x2aa198,
-		0x2e8b57,
-		0x4e4e4e,
-		0x450000,
-		0x789f00,
-		0x780000,
-		0x973d45,
-		0xe20000,
-		0xff8036,
-		0xffff9a,
-		0xffffff,
+		0x0a0e14,
+		0x304357,
+		0x39bae6,
+		0x3d424d,
+		0xb3b1ad,
+		0xc2d94c,
+		0xff3333,
+		0xff8f40,
 	}
 )
 
