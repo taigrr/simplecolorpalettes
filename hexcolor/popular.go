@@ -1,5 +1,7 @@
 package hexcolor
 
+// These named palettes are sourced from https://www.color-hex.com/
+
 var Palettes = map[string][]int{
 	"#3":                            {0x2A4D69, 0x4B86B4, 0xADCBE3, 0xE7EFF6, 0x63ACE5},
 	"- Lips -":                      {0xF98787, 0xE76A6A, 0xD65B5B, 0xC14B4B, 0xB83F3F},

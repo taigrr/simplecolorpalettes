@@ -6,6 +6,7 @@ import (
 	"github.com/taigrr/go-colorpalettes/simplecolor"
 )
 
+// These colors are sourced from w3schools: https://www.w3schools.com/cssref/css_colors.asp
 var colors = simplecolor.NamedPalette{
 	"aliceblue":            0xF0F8FF,
 	"antiquewhite":         0xFAEBD7,
