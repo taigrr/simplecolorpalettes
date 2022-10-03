@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const TotalHexColorspace = 0xffffff
+const TotalHexColorspace = 0xffffff + 1
 
 type (
 	SimpleColor       int
@@ -112,8 +112,14 @@ func FromHexString(h string) SimpleColor {
 	case 6:
 		break
 	case 3:
-		stretchedHex := hexRunes[0] + hexRunes[0] + hexRunes[1] + hexRunes[1] + hexRunes[2] + hexRunes[2]
-		h = string(stretchedHex)
+		stretchedHex := fmt.Sprintf("%s%s%s%s%s%s",
+			string(hexRunes[0]),
+			string(hexRunes[0]),
+			string(hexRunes[1]),
+			string(hexRunes[1]),
+			string(hexRunes[2]),
+			string(hexRunes[2]))
+		h = stretchedHex
 	default:
 		return FromHexString("#66042d")
 	}
