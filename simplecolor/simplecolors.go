@@ -1,6 +1,7 @@
 package simplecolor
 
 import (
+	"fmt"
 	"image/color"
 	"sort"
 	"strconv"
@@ -20,6 +21,17 @@ func (s SimplePalette) ToPalette() color.Palette {
 		x = append(x, SimpleColor(c))
 	}
 	return color.Palette(x)
+}
+
+func (c SimpleColor) ToHex() string {
+	return "#" + fmt.Sprintf("%06X", c)
+}
+
+func (c SimpleColor) ToShortHex() string {
+	value := c >> 16 & 0xF
+	value += c >> 8 & 0xF
+	value += c & 0xF
+	return "#" + fmt.Sprintf("%06X", value)
 }
 
 func (s SimpleColor) RGBA() (r, g, b, a uint32) {
