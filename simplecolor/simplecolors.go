@@ -92,6 +92,10 @@ func (p SimplePalette) ToAnsi16() (sp SimplePalette) {
 	return
 }
 
+func New(color int) SimpleColor {
+	return SimpleColor(color)
+}
+
 func FromRGBA(r, g, b, _ uint32) SimpleColor {
 	c := r
 	c = c<<8 + g
