@@ -3,7 +3,7 @@ package html
 import (
 	"sort"
 
-	"github.com/taigrr/go-colorpalettes/simplecolor"
+	"github.com/taigrr/simplecolorpalettes/simplecolor"
 )
 
 // These colors are sourced from w3schools: https://www.w3schools.com/cssref/css_colors.asp

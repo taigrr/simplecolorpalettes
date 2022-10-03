@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/taigrr/go-colorpalettes/palettes/material"
-	"github.com/taigrr/go-colorpalettes/palettes/vim/luna"
+	"github.com/taigrr/simplecolorpalettes/palettes/material"
+	"github.com/taigrr/simplecolorpalettes/palettes/vim/luna"
 )
 
 func main() {

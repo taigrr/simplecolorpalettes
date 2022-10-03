@@ -1,6 +1,6 @@
 package ansi
 
-import "github.com/taigrr/go-colorpalettes/simplecolor"
+import "github.com/taigrr/simplecolorpalettes/simplecolor"
 
 // Extended ANSI colors (0-255).
 var Ansi = simplecolor.SimplePalette{

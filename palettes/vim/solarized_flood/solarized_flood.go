@@ -4,7 +4,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/taigrr/go-colorpalettes/simplecolor"
+	"github.com/taigrr/simplecolorpalettes/simplecolor"
 )
 
 var (

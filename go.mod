@@ -1,3 +1,3 @@
-module github.com/taigrr/go-colorpalettes
+module github.com/taigrr/simplecolorpalettes
 
 go 1.18

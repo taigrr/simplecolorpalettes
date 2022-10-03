@@ -3,7 +3,7 @@ package material
 import (
 	"sort"
 
-	"github.com/taigrr/go-colorpalettes/simplecolor"
+	"github.com/taigrr/simplecolorpalettes/simplecolor"
 )
 
 // The names and hex values for the material palettes are sourced from
