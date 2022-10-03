@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const TotalHexColorspace = 0xffffff
+
 type (
 	SimpleColor       int
 	NamedPalette      map[string]SimpleColor
@@ -93,13 +95,13 @@ func (p SimplePalette) ToAnsi16() (sp SimplePalette) {
 }
 
 func New(color int) SimpleColor {
-	return SimpleColor(color)
+	return SimpleColor(color % TotalHexColorspace)
 }
 
 func FromRGBA(r, g, b, _ uint32) SimpleColor {
-	c := r
-	c = c<<8 + g
-	c = c<<8 + b
+	c := r % TotalHexColorspace
+	c = c<<8 + (g % TotalHexColorspace)
+	c = c<<8 + (b % TotalHexColorspace)
 	return SimpleColor(c)
 }
 
