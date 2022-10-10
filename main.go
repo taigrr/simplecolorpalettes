@@ -15,10 +15,7 @@ func main() {
 	var open []string
 	var close []string
 	for _, c := range colors {
-		red := c >> 16 & 0xFF
-		green := c >> 8 & 0xFF
-		blue := c & 0xFF
-
+		red, green, blue, _ := c.RGBA()
 		if (float32(red)*0.299 + float32(green)*0.587 + float32(blue)*0.114) > 150.0 {
 			open = append(open, fmt.Sprintf("\u001B[38;2;%d;%d;%dm", 0, 0, 0))
 		} else {

@@ -33,6 +33,34 @@ func (n NamedPalette) ToPalette() color.Palette {
 	return color.Palette(x)
 }
 
+func (a SimplePalette) Sort() SimplePalette {
+	sort.Sort(a)
+	return a
+}
+
+func (a SimplePalette) Join(b SimplePalette) SimplePalette {
+	m := make(map[SimpleColor]SimpleColor)
+	r := SimplePalette{}
+	for _, c := range a {
+		m[c] = c
+	}
+	for _, c := range b {
+		m[c] = c
+	}
+	for _, c := range m {
+		r = append(r, c)
+	}
+	sort.Sort(r)
+	return r
+}
+
+func (s SimplePalette) Get(index int) SimpleColor {
+	if index < 0 || index > len(s) {
+		return FromHexString("#66042d")
+	}
+	return s[index]
+}
+
 func (s SimplePalette) ToPalette() color.Palette {
 	var x color.Palette
 	for _, c := range s {
@@ -66,6 +94,13 @@ func (input SimpleColor) ToExtendedAnsi() SimpleColor {
 	color := ansi.ToPalette().Convert(input)
 	r, g, b, _ := color.RGBA()
 	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
+}
+
+func (p NamedPalette) ToExtendedAnsi() NamedPalette {
+	for k, v := range p {
+		p[k] = v.ToExtendedAnsi()
+	}
+	return p
 }
 
 func (p SimplePalette) ToExtendedAnsi() (sp SimplePalette) {
