@@ -28,18 +28,19 @@ var (
 		"800": 0x6a1b9a, "900": 0x4a148c, "A100": 0xea80fc, "A200": 0xe040fb,
 		"A400": 0xd500f9, "A700": 0xaa00ff,
 	}
-	deepPurple = simplecolor.NamedPalette{
-		"50": 0xede7f6, "100": 0xd1c4e9, "200": 0xb39ddb, "300": 0x9575cd,
-		"400": 0x7e57c2, "500": 0x673ab7, "600": 0x5e35b1, "700": 0x512da8,
-		"800": 0x4527a0, "900": 0x311b92, "A100": 0xb388ff, "A200": 0x7c4dff,
-		"A400": 0x651fff, "A700": 0x6200ea,
-	}
-	indigo = simplecolor.NamedPalette{
-		"50": 0xe8eaf6, "100": 0xc5cae9, "200": 0x9fa8da, "300": 0x7986cb,
-		"400": 0x5c6bc0, "500": 0x3f51b5, "600": 0x3949ab, "700": 0x303f9f,
-		"800": 0x283593, "900": 0x1a237e, "A100": 0x8c9eff, "A200": 0x536dfe,
-		"A400": 0x3d5afe, "A700": 0x304ffe,
-	}
+	// Removed as not used, leaving in for future use if needed.
+	// deepPurple = simplecolor.NamedPalette{
+	// 	"50": 0xede7f6, "100": 0xd1c4e9, "200": 0xb39ddb, "300": 0x9575cd,
+	// 	"400": 0x7e57c2, "500": 0x673ab7, "600": 0x5e35b1, "700": 0x512da8,
+	// 	"800": 0x4527a0, "900": 0x311b92, "A100": 0xb388ff, "A200": 0x7c4dff,
+	// 	"A400": 0x651fff, "A700": 0x6200ea,
+	// }
+	// indigo = simplecolor.NamedPalette{
+	// 	"50": 0xe8eaf6, "100": 0xc5cae9, "200": 0x9fa8da, "300": 0x7986cb,
+	// 	"400": 0x5c6bc0, "500": 0x3f51b5, "600": 0x3949ab, "700": 0x303f9f,
+	// 	"800": 0x283593, "900": 0x1a237e, "A100": 0x8c9eff, "A200": 0x536dfe,
+	// 	"A400": 0x3d5afe, "A700": 0x304ffe,
+	// }
 	blue = simplecolor.NamedPalette{
 		"50": 0xe3f2fd, "100": 0xbbdefb, "200": 0x90caf9, "300": 0x64b5f6,
 		"400": 0x42a5f5, "500": 0x2196f3, "600": 0x1e88e5, "700": 0x1976d2,
