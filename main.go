@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/taigrr/simplecolorpalettes/palettes/material"
 	"github.com/taigrr/simplecolorpalettes/palettes/vim/luna"
 )
 
 func main() {
-	colors := material.GetShadesForColorName(material.Red)
-	colors = luna.GetPalette()
+	colors := luna.GetPalette()
 	colors = colors.ToExtendedAnsi()
 	var open []string
 	var close []string
