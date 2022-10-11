@@ -33,15 +33,15 @@ func (n NamedPalette) ToPalette() color.Palette {
 	return color.Palette(x)
 }
 
-func (a SimplePalette) Sort() SimplePalette {
-	sort.Sort(a)
-	return a
+func (s SimplePalette) Sort() SimplePalette {
+	sort.Sort(s)
+	return s
 }
 
-func (a SimplePalette) Join(b SimplePalette) SimplePalette {
+func (s SimplePalette) Join(b SimplePalette) SimplePalette {
 	m := make(map[SimpleColor]SimpleColor)
 	r := SimplePalette{}
-	for _, c := range a {
+	for _, c := range s {
 		m[c] = c
 	}
 	for _, c := range b {
@@ -80,32 +80,32 @@ func (c SimpleColor) ToShortHex() string {
 	return "#" + fmt.Sprintf("%06X", value)
 }
 
-func (s SimpleColor) RGBA() (r, g, b, a uint32) {
-	return uint32(s) >> 16 & 0xFF, uint32(s) >> 8 & 0xFF, uint32(s) & 0xFF, 0xFF
+func (c SimpleColor) RGBA() (r, g, b, a uint32) {
+	return uint32(c) >> 16 & 0xFF, uint32(c) >> 8 & 0xFF, uint32(c) & 0xFF, 0xFF
 }
 
-func (input SimpleColor) ToAnsi16() SimpleColor {
-	color := ansi[0:16].ToPalette().Convert(input)
+func (c SimpleColor) ToAnsi16() SimpleColor {
+	color := ansi[0:16].ToPalette().Convert(c)
 	r, g, b, _ := color.RGBA()
 	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
 }
 
-func (input SimpleColor) ToExtendedAnsi() SimpleColor {
-	color := ansi.ToPalette().Convert(input)
+func (c SimpleColor) ToExtendedAnsi() SimpleColor {
+	color := ansi.ToPalette().Convert(c)
 	r, g, b, _ := color.RGBA()
 	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
 }
 
-func (p NamedPalette) ToExtendedAnsi() NamedPalette {
-	for k, v := range p {
-		p[k] = v.ToExtendedAnsi()
+func (n NamedPalette) ToExtendedAnsi() NamedPalette {
+	for k, v := range n {
+		n[k] = v.ToExtendedAnsi()
 	}
-	return p
+	return n
 }
 
-func (p SimplePalette) ToExtendedAnsi() (sp SimplePalette) {
+func (s SimplePalette) ToExtendedAnsi() (sp SimplePalette) {
 	used := make(map[SimpleColor]bool)
-	for _, x := range p {
+	for _, x := range s {
 		clampedColor := x.ToExtendedAnsi()
 		if _, found := used[clampedColor]; found {
 			continue
@@ -118,21 +118,21 @@ func (p SimplePalette) ToExtendedAnsi() (sp SimplePalette) {
 	return
 }
 
-func (e SimplePalette) Len() int {
-	return len(e)
+func (s SimplePalette) Len() int {
+	return len(s)
 }
 
-func (e SimplePalette) Less(i, j int) bool {
-	return int(e[i]) < int(e[j])
+func (s SimplePalette) Less(i, j int) bool {
+	return int(s[i]) < int(s[j])
 }
 
-func (e SimplePalette) Swap(i, j int) {
-	e[i], e[j] = e[j], e[i]
+func (s SimplePalette) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
 }
 
-func (p SimplePalette) ToAnsi16() (sp SimplePalette) {
+func (s SimplePalette) ToAnsi16() (sp SimplePalette) {
 	used := make(map[SimpleColor]bool)
-	for _, x := range p {
+	for _, x := range s {
 		clampedColor := x.ToAnsi16()
 		if _, found := used[clampedColor]; found {
 			continue
