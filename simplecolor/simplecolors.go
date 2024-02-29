@@ -17,6 +17,17 @@ type (
 	conversionPalette []color.Color
 )
 
+func (n NamedPalette) Get(name string) SimpleColor {
+	return n[name]
+}
+
+func (n NamedPalette) Names() (names []string) {
+	for k := range n {
+		names = append(names, k)
+	}
+	return
+}
+
 func (n NamedPalette) ToSimplePalette() SimplePalette {
 	var sp SimplePalette
 	for _, c := range n {
