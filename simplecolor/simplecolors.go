@@ -11,10 +11,9 @@ import (
 const TotalHexColorspace = 0xffffff + 1
 
 type (
-	SimpleColor       int
-	NamedPalette      map[string]SimpleColor
-	SimplePalette     []SimpleColor
-	conversionPalette []color.Color
+	SimpleColor   int
+	NamedPalette  map[string]SimpleColor
+	SimplePalette []SimpleColor
 )
 
 func (n NamedPalette) Get(name string) SimpleColor {
