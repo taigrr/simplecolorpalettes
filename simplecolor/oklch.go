@@ -27,11 +27,11 @@ func linearToSRGB(c float64) float64 {
 
 // ToOKLCH converts a SimpleColor to the OKLCH color space.
 func (c SimpleColor) ToOKLCH() OKLCH {
-	r, g, b, _ := c.RGBA()
+	r8, g8, b8 := c.RGB8()
 	// Normalize to 0-1
-	rf := sRGBToLinear(float64(r) / 255.0)
-	gf := sRGBToLinear(float64(g) / 255.0)
-	bf := sRGBToLinear(float64(b) / 255.0)
+	rf := sRGBToLinear(float64(r8) / 255.0)
+	gf := sRGBToLinear(float64(g8) / 255.0)
+	bf := sRGBToLinear(float64(b8) / 255.0)
 
 	// Linear RGB to LMS (Ottosson)
 	l_ := 0.4122214708*rf + 0.5363325363*gf + 0.0514459929*bf
