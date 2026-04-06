@@ -20,11 +20,13 @@ func (n NamedPalette) Get(name string) SimpleColor {
 	return n[name]
 }
 
-func (n NamedPalette) Names() (names []string) {
+func (n NamedPalette) Names() []string {
+	names := make([]string, 0, len(n))
 	for k := range n {
 		names = append(names, k)
 	}
-	return
+	sort.Strings(names)
+	return names
 }
 
 func (n NamedPalette) ToSimplePalette() SimplePalette {
@@ -65,7 +67,7 @@ func (s SimplePalette) Join(b SimplePalette) SimplePalette {
 }
 
 func (s SimplePalette) Get(index int) SimpleColor {
-	if index < 0 || index > len(s) {
+	if index < 0 || index >= len(s) {
 		return FromHexString("#66042d")
 	}
 	return s[index]
@@ -83,27 +85,43 @@ func (c SimpleColor) ToHex() string {
 	return "#" + fmt.Sprintf("%06X", c)
 }
 
+// ToShortHex returns a 3-character hex string if possible (e.g. "#F00"),
+// otherwise falls back to the full 6-character hex string.
 func (c SimpleColor) ToShortHex() string {
-	value := c >> 16 & 0xF
-	value += c >> 8 & 0xF
-	value += c & 0xF
-	return "#" + fmt.Sprintf("%06X", value)
+	r := uint32(c) >> 16 & 0xFF
+	g := uint32(c) >> 8 & 0xFF
+	b := uint32(c) & 0xFF
+	// A color can be shortened when each channel's high and low nibbles match
+	if r>>4 == r&0xF && g>>4 == g&0xF && b>>4 == b&0xF {
+		return "#" + fmt.Sprintf("%X%X%X", r&0xF, g&0xF, b&0xF)
+	}
+	return c.ToHex()
 }
 
+// RGBA implements the color.Color interface. Returns pre-multiplied 16-bit
+// values in [0, 0xFFFF] as required by the standard library.
 func (c SimpleColor) RGBA() (r, g, b, a uint32) {
-	return uint32(c) >> 16 & 0xFF, uint32(c) >> 8 & 0xFF, uint32(c) & 0xFF, 0xFF
+	r8 := uint32(c) >> 16 & 0xFF
+	g8 := uint32(c) >> 8 & 0xFF
+	b8 := uint32(c) & 0xFF
+	return r8 | r8<<8, g8 | g8<<8, b8 | b8<<8, 0xFFFF
+}
+
+// RGB8 returns the 8-bit [0, 255] red, green, and blue components.
+func (c SimpleColor) RGB8() (r, g, b uint8) {
+	return uint8(uint32(c) >> 16 & 0xFF), uint8(uint32(c) >> 8 & 0xFF), uint8(uint32(c) & 0xFF)
 }
 
 func (c SimpleColor) ToAnsi16() SimpleColor {
-	color := ansi[0:16].ToPalette().Convert(c)
-	r, g, b, _ := color.RGBA()
-	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
+	converted := ansi[0:16].ToPalette().Convert(c)
+	r, g, b, _ := converted.RGBA()
+	return SimpleColor((r>>8)<<16 | (g>>8)<<8 | (b >> 8))
 }
 
 func (c SimpleColor) ToExtendedAnsi() SimpleColor {
-	color := ansi.ToPalette().Convert(c)
-	r, g, b, _ := color.RGBA()
-	return SimpleColor(uint32(r)<<16 + uint32(g)<<8 + b)
+	converted := ansi.ToPalette().Convert(c)
+	r, g, b, _ := converted.RGBA()
+	return SimpleColor((r>>8)<<16 | (g>>8)<<8 | (b >> 8))
 }
 
 func (n NamedPalette) ToExtendedAnsi() NamedPalette {
@@ -159,11 +177,10 @@ func New(color int) SimpleColor {
 	return SimpleColor(color % TotalHexColorspace)
 }
 
+// FromRGBA creates a SimpleColor from 8-bit [0, 255] R, G, B values.
+// The alpha component is ignored.
 func FromRGBA(r, g, b, _ uint32) SimpleColor {
-	c := r % TotalHexColorspace
-	c = c<<8 + (g % TotalHexColorspace)
-	c = c<<8 + (b % TotalHexColorspace)
-	return SimpleColor(c)
+	return SimpleColor((r&0xFF)<<16 | (g&0xFF)<<8 | (b & 0xFF))
 }
 
 func FromHexString(h string) SimpleColor {

@@ -28,8 +28,8 @@ func TestRoundTrip(t *testing.T) {
 		c := FromHexString(tc.hex)
 		oklch := c.ToOKLCH()
 		back := FromOKLCH(oklch.L, oklch.C, oklch.H)
-		r1, g1, b1, _ := c.RGBA()
-		r2, g2, b2, _ := back.RGBA()
+		r1, g1, b1 := c.RGB8()
+		r2, g2, b2 := back.RGB8()
 		if abs(int(r1)-int(r2)) > tc.tolerance || abs(int(g1)-int(g2)) > tc.tolerance || abs(int(b1)-int(b2)) > tc.tolerance {
 			t.Errorf("round-trip failed for %s: got %s (R%d G%d B%d vs R%d G%d B%d)",
 				c.ToHex(), back.ToHex(), r1, g1, b1, r2, g2, b2)
