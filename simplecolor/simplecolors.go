@@ -166,7 +166,7 @@ func (s SimplePalette) ToAnsi16() (sp SimplePalette) {
 			continue
 		}
 		used[clampedColor] = true
-		sp = append(sp, x.ToExtendedAnsi())
+		sp = append(sp, clampedColor)
 	}
 	sort.Sort(sp)
 
