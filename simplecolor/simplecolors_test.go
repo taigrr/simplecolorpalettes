@@ -242,3 +242,27 @@ func TestNamedPaletteToExtendedAnsiMutatesValues(t *testing.T) {
 		t.Fatal("ToExtendedAnsi() should mutate and return the same map")
 	}
 }
+
+func TestSimplePaletteToAnsi16(t *testing.T) {
+	palette := SimplePalette{
+		FromHexString("#121212"),
+		FromHexString("#080808"),
+		FromHexString("#EEEEEE"),
+	}
+
+	got := palette.ToAnsi16()
+	want := SimplePalette{
+		FromHexString("#000000").ToAnsi16(),
+		FromHexString("#FFFFFF").ToAnsi16(),
+	}.Sort()
+
+	if len(got) != len(want) {
+		t.Fatalf("ToAnsi16() len = %d, want %d (%v)", len(got), len(want), got)
+	}
+
+	for index := range want {
+		if got[index] != want[index] {
+			t.Fatalf("ToAnsi16()[%d] = %s, want %s", index, got[index].ToHex(), want[index].ToHex())
+		}
+	}
+}
