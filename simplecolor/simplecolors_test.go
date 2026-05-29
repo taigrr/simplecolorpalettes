@@ -200,3 +200,45 @@ func TestPaletteConvert(t *testing.T) {
 		t.Errorf("expected light color to map to white, got R=%d", rW)
 	}
 }
+
+func TestSimplePaletteToExtendedAnsiDeduplicatesExactMatches(t *testing.T) {
+	palette := SimplePalette{
+		FromHexString("#000000"),
+		FromHexString("#000000"),
+		FromHexString("#FFFFFF"),
+	}
+
+	got := palette.ToExtendedAnsi()
+	want := SimplePalette{
+		FromHexString("#000000").ToExtendedAnsi(),
+		FromHexString("#FFFFFF").ToExtendedAnsi(),
+	}.Sort()
+
+	if len(got) != len(want) {
+		t.Fatalf("ToExtendedAnsi() len = %d, want %d (%v)", len(got), len(want), got)
+	}
+
+	for index := range want {
+		if got[index] != want[index] {
+			t.Fatalf("ToExtendedAnsi()[%d] = %s, want %s", index, got[index].ToHex(), want[index].ToHex())
+		}
+	}
+}
+
+func TestNamedPaletteToExtendedAnsiMutatesValues(t *testing.T) {
+	named := NamedPalette{
+		"black": FromHexString("#000000"),
+		"white": FromHexString("#FFFFFF"),
+	}
+
+	got := named.ToExtendedAnsi()
+	if got["black"] != FromHexString("#000000").ToExtendedAnsi() {
+		t.Fatalf("black = %s, want %s", got["black"].ToHex(), FromHexString("#000000").ToExtendedAnsi().ToHex())
+	}
+	if got["white"] != FromHexString("#FFFFFF").ToExtendedAnsi() {
+		t.Fatalf("white = %s, want %s", got["white"].ToHex(), FromHexString("#FFFFFF").ToExtendedAnsi().ToHex())
+	}
+	if got["black"] != named["black"] || got["white"] != named["white"] {
+		t.Fatal("ToExtendedAnsi() should mutate and return the same map")
+	}
+}
