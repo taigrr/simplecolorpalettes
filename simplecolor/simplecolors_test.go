@@ -13,6 +13,8 @@ func TestCreateColor(t *testing.T) {
 	}{
 		{ID: "white", Value: TotalHexColorspace - 1, Result: TotalHexColorspace - 1},
 		{ID: "WraparoundBlack", Value: TotalHexColorspace, Result: 0},
+		{ID: "WraparoundWhiteFromNegativeOne", Value: -1, Result: TotalHexColorspace - 1},
+		{ID: "WraparoundWhiteFromNegativeColorspace", Value: -TotalHexColorspace - 1, Result: TotalHexColorspace - 1},
 		{ID: "black", Value: 0, Result: 0},
 	}
 	for _, c := range tc {

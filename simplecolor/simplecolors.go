@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-const TotalHexColorspace = 0xffffff + 1
+const (
+	TotalHexColorspace = 0xffffff + 1
+	fallbackHex        = "#66042d"
+)
 
 type (
 	SimpleColor   int
@@ -68,7 +71,7 @@ func (s SimplePalette) Join(b SimplePalette) SimplePalette {
 
 func (s SimplePalette) Get(index int) SimpleColor {
 	if index < 0 || index >= len(s) {
-		return FromHexString("#66042d")
+		return FromHexString(fallbackHex)
 	}
 	return s[index]
 }
@@ -174,7 +177,11 @@ func (s SimplePalette) ToAnsi16() (sp SimplePalette) {
 }
 
 func New(color int) SimpleColor {
-	return SimpleColor(color % TotalHexColorspace)
+	normalizedColor := color % TotalHexColorspace
+	if normalizedColor < 0 {
+		normalizedColor += TotalHexColorspace
+	}
+	return SimpleColor(normalizedColor)
 }
 
 // FromRGBA creates a SimpleColor from 8-bit [0, 255] R, G, B values.
@@ -199,7 +206,7 @@ func FromHexString(h string) SimpleColor {
 			string(hexRunes[2]))
 		h = stretchedHex
 	default:
-		return FromHexString("#66042d")
+		return FromHexString(fallbackHex)
 	}
 	i, err := strconv.ParseInt(h, 16, 64)
 	if err != nil {
@@ -208,7 +215,7 @@ func FromHexString(h string) SimpleColor {
 		// Instead, return a really weird color to draw attention.
 		// Black is the zero-value and it's actually used often, "plum" is
 		// (probably) not.
-		return FromHexString("#66042d")
+		return FromHexString(fallbackHex)
 	}
 	return SimpleColor(i)
 }
