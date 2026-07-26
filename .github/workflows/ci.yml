@@ -22,8 +22,28 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Check formatting
+        run: |
+          diff=$(gofmt -l .)
+          if [ -n "$diff" ]; then
+            echo "The following files are not gofmt-formatted:"
+            echo "$diff"
+            exit 1
+          fi
+
+      - name: Verify go.mod is tidy
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build
+        run: go build ./...
+
       - name: Run tests
-        run: go test ./...
+        run: go test -race ./...
 
       - name: Run staticcheck
         uses: dominikh/staticcheck-action@v1
