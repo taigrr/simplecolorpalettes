@@ -164,6 +164,56 @@ func TestGetBounds(t *testing.T) {
 	}
 }
 
+func TestSimplePaletteJoinDeduplicatesAndSorts(t *testing.T) {
+	left := SimplePalette{
+		FromHexString("#FFFFFF"),
+		FromHexString("#000000"),
+		FromHexString("#00FF00"),
+	}
+	right := SimplePalette{
+		FromHexString("#00FF00"),
+		FromHexString("#FF0000"),
+		FromHexString("#000000"),
+	}
+
+	got := left.Join(right)
+	want := SimplePalette{
+		FromHexString("#000000"),
+		FromHexString("#00FF00"),
+		FromHexString("#FF0000"),
+		FromHexString("#FFFFFF"),
+	}
+
+	if len(got) != len(want) {
+		t.Fatalf("Join() len = %d, want %d (%v)", len(got), len(want), got)
+	}
+	for index := range want {
+		if got[index] != want[index] {
+			t.Fatalf("Join()[%d] = %s, want %s", index, got[index].ToHex(), want[index].ToHex())
+		}
+	}
+}
+
+func TestSimplePaletteJoinDoesNotMutateInputs(t *testing.T) {
+	left := SimplePalette{FromHexString("#FFFFFF"), FromHexString("#000000")}
+	right := SimplePalette{FromHexString("#FF0000")}
+	leftBefore := append(SimplePalette(nil), left...)
+	rightBefore := append(SimplePalette(nil), right...)
+
+	_ = left.Join(right)
+
+	for index := range leftBefore {
+		if left[index] != leftBefore[index] {
+			t.Fatalf("left[%d] = %s, want %s", index, left[index].ToHex(), leftBefore[index].ToHex())
+		}
+	}
+	for index := range rightBefore {
+		if right[index] != rightBefore[index] {
+			t.Fatalf("right[%d] = %s, want %s", index, right[index].ToHex(), rightBefore[index].ToHex())
+		}
+	}
+}
+
 func TestNamedPaletteNamesSorted(t *testing.T) {
 	np := NamedPalette{
 		"zebra":    FromHexString("#000000"),
