@@ -230,6 +230,65 @@ func TestNamedPaletteNamesSorted(t *testing.T) {
 	}
 }
 
+func TestNamedPaletteGet(t *testing.T) {
+	named := NamedPalette{
+		"primary":   FromHexString("#336699"),
+		"secondary": FromHexString("#CC6633"),
+	}
+
+	if got, want := named.Get("primary"), FromHexString("#336699"); got != want {
+		t.Fatalf("Get(%q) = %s, want %s", "primary", got.ToHex(), want.ToHex())
+	}
+	if got := named.Get("missing"); got != 0 {
+		t.Fatalf("Get(%q) = %s, want zero value", "missing", got.ToHex())
+	}
+}
+
+func TestNamedPaletteToSimplePalette(t *testing.T) {
+	named := NamedPalette{
+		"red":   FromHexString("#FF0000"),
+		"green": FromHexString("#00FF00"),
+		"blue":  FromHexString("#0000FF"),
+	}
+
+	got := named.ToSimplePalette()
+	if len(got) != len(named) {
+		t.Fatalf("ToSimplePalette() len = %d, want %d", len(got), len(named))
+	}
+
+	seen := make(map[SimpleColor]bool, len(got))
+	for _, color := range got {
+		seen[color] = true
+	}
+	for name, color := range named {
+		if !seen[color] {
+			t.Fatalf("ToSimplePalette() missing %s value %s", name, color.ToHex())
+		}
+	}
+}
+
+func TestNamedPaletteToPalette(t *testing.T) {
+	named := NamedPalette{
+		"black": FromHexString("#000000"),
+		"white": FromHexString("#FFFFFF"),
+	}
+
+	got := named.ToPalette()
+	if len(got) != len(named) {
+		t.Fatalf("ToPalette() len = %d, want %d", len(got), len(named))
+	}
+
+	for _, paletteColor := range got {
+		simple, ok := paletteColor.(SimpleColor)
+		if !ok {
+			t.Fatalf("ToPalette() color type = %T, want SimpleColor", paletteColor)
+		}
+		if simple != named.Get("black") && simple != named.Get("white") {
+			t.Fatalf("ToPalette() included unexpected color %s", simple.ToHex())
+		}
+	}
+}
+
 func TestPaletteConvert(t *testing.T) {
 	// color.Palette.Convert uses Euclidean distance in the RGBA space.
 	// With proper 16-bit RGBA, this should find the nearest color correctly.
