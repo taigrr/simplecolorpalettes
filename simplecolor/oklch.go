@@ -36,7 +36,7 @@ func (c SimpleColor) ToOKLCH() OKLCH {
 	// Linear RGB to LMS (Ottosson)
 	l_ := 0.4122214708*rf + 0.5363325363*gf + 0.0514459929*bf
 	m_ := 0.2119034982*rf + 0.6806995451*gf + 0.1073969566*bf
-	s_ := 0.0883024619*rf + 0.2220049174*gf + 0.6896926208*bf
+	s_ := 0.0883024619*rf + 0.2817188376*gf + 0.6299787005*bf
 
 	l := math.Cbrt(l_)
 	m := math.Cbrt(m_)
