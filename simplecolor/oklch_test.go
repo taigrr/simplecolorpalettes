@@ -6,22 +6,21 @@ import (
 )
 
 func TestRoundTrip(t *testing.T) {
-	// Colors that are well within sRGB gamut round-trip cleanly.
-	// Highly saturated colors (pure blue, etc.) may have slight drift
-	// due to floating point and gamut boundary effects.
+	// sRGB colors, including saturated primaries, round-trip within one
+	// channel step despite floating-point matrix approximations.
 	colors := []struct {
 		hex       string
 		tolerance int
 	}{
-		{"#FF0000", 1},  // red
-		{"#00FF00", 1},  // green
-		{"#FFFFFF", 1},  // white
-		{"#000000", 1},  // black
-		{"#FF8800", 1},  // orange
-		{"#808080", 1},  // mid gray
-		{"#0000FF", 32}, // blue - significant drift due to OKLab gamut boundary
-		{"#123456", 3},  // arbitrary
-		{"#ABCDEF", 3},  // arbitrary
+		{"#FF0000", 1}, // red
+		{"#00FF00", 1}, // green
+		{"#FFFFFF", 1}, // white
+		{"#000000", 1}, // black
+		{"#FF8800", 1}, // orange
+		{"#808080", 1}, // mid gray
+		{"#0000FF", 1}, // blue
+		{"#123456", 1}, // arbitrary
+		{"#ABCDEF", 1}, // arbitrary
 	}
 
 	for _, tc := range colors {
@@ -146,5 +145,67 @@ func TestPaletteClampOKLCH(t *testing.T) {
 		if oklch.C < 0.03 || oklch.C > 0.20 {
 			t.Errorf("color %d: C = %f, out of bounds", i, oklch.C)
 		}
+	}
+}
+
+func TestOKLCHPrimaryValues(t *testing.T) {
+	// Reference: https://bottosson.github.io/posts/oklab/
+	// Fixed reference values catch paired forward/inverse errors that a
+	// round-trip test alone cannot detect. Hue is measured in degrees.
+	tests := []struct {
+		name  string
+		color SimpleColor
+		want  OKLCH
+	}{
+		{"red", 0xFF0000, OKLCH{L: 0.627955, C: 0.257683, H: 29.233885}},
+		{"green", 0x00FF00, OKLCH{L: 0.866440, C: 0.294827, H: 142.495339}},
+		{"blue", 0x0000FF, OKLCH{L: 0.452014, C: 0.313214, H: 264.052021}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := test.color.ToOKLCH()
+			if math.Abs(got.L-test.want.L) > 0.000001 ||
+				math.Abs(got.C-test.want.C) > 0.000001 ||
+				math.Abs(got.H-test.want.H) > 0.000001 {
+				t.Errorf("ToOKLCH() = %+v, want %+v", got, test.want)
+			}
+			if got := FromOKLCH(test.want.L, test.want.C, test.want.H); got != test.color {
+				t.Errorf("FromOKLCH(reference) = %s, want %s", got.ToHex(), test.color.ToHex())
+			}
+		})
+	}
+}
+
+func TestFromOKLCHHueWrapping(t *testing.T) {
+	const hue = 35.0
+	want := FromOKLCH(0.6, 0.1, hue)
+	for _, turns := range []float64{-2, -1, 0, 1, 2} {
+		wrappedHue := hue + turns*360
+		if got := FromOKLCH(0.6, 0.1, wrappedHue); got != want {
+			t.Errorf("hue %g: got %s, want %s", wrappedHue, got.ToHex(), want.ToHex())
+		}
+	}
+}
+
+func TestFromOKLCHNeutralAndGamutBounds(t *testing.T) {
+	tests := []struct {
+		name  string
+		input OKLCH
+		want  SimpleColor
+	}{
+		{"black", OKLCH{L: 0, C: 0, H: 123}, 0x000000},
+		{"white", OKLCH{L: 1, C: 0, H: 321}, 0xFFFFFF},
+		{"neutral gray", OKLCH{L: 0.5, C: 0, H: 90}, 0x636363},
+		{"above white", OKLCH{L: 2, C: 0, H: 0}, 0xFFFFFF},
+		{"below black", OKLCH{L: -1, C: 0, H: 0}, 0x000000},
+		{"out of gamut red", OKLCH{L: 0.6, C: 1, H: 30}, 0xFF0000},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := FromOKLCH(test.input.L, test.input.C, test.input.H)
+			if got != test.want {
+				t.Errorf("FromOKLCH(%+v) = %s, want %s", test.input, got.ToHex(), test.want.ToHex())
+			}
+		})
 	}
 }
