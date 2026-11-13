@@ -377,3 +377,36 @@ func TestSimplePaletteToAnsi16(t *testing.T) {
 		}
 	}
 }
+
+func TestFromHexStringValidation(t *testing.T) {
+	cases := []struct {
+		input string
+		want  SimpleColor
+	}{
+		{"#aBc", 0xAABBCC},
+		{"aBc", 0xAABBCC},
+		{"#aB12cD", 0xAB12CD},
+		{"aB12cD", 0xAB12CD},
+		{"+12345", 0x66042D},
+		{"-12345", 0x66042D},
+		{"#+12345", 0x66042D},
+		{"#-12345", 0x66042D},
+		{"12#3456", 0x66042D},
+		{"123456#", 0x66042D},
+		{"##123456", 0x66042D},
+		{"a#bc", 0x66042D},
+		{"", 0x66042D},
+		{"#", 0x66042D},
+		{"12345", 0x66042D},
+		{"1234567", 0x66042D},
+		{"gggggg", 0x66042D},
+		{" 12345", 0x66042D},
+	}
+	for _, test := range cases {
+		t.Run(test.input, func(t *testing.T) {
+			if got := FromHexString(test.input); got != test.want {
+				t.Errorf("FromHexString(%q) = %s, want %s", test.input, got.ToHex(), test.want.ToHex())
+			}
+		})
+	}
+}

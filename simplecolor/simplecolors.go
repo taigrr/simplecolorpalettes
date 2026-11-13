@@ -190,8 +190,10 @@ func FromRGBA(r, g, b, _ uint32) SimpleColor {
 	return SimpleColor((r&0xFF)<<16 | (g&0xFF)<<8 | (b & 0xFF))
 }
 
+// FromHexString parses three or six hexadecimal digits with an optional leading #.
+// Invalid input returns the fallback color #66042D.
 func FromHexString(h string) SimpleColor {
-	h = strings.ReplaceAll(h, "#", "")
+	h = strings.TrimPrefix(h, "#")
 	hexRunes := []rune(h)
 	switch len(hexRunes) {
 	case 6:
@@ -208,7 +210,7 @@ func FromHexString(h string) SimpleColor {
 	default:
 		return FromHexString(fallbackHex)
 	}
-	i, err := strconv.ParseInt(h, 16, 64)
+	i, err := strconv.ParseUint(h, 16, 24)
 	if err != nil {
 		// if there's an error, we can't return it
 		// since this is a simple method.
